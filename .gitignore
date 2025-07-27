@@ -1,0 +1,27 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Environment
+.env
+venv/
+env/
+
+# SQLite
+*.sqlite3
+
+# Static/media
+static/
+media/
+
+# IDE
+.vscode/
+.idea/
+
+# Logs
+*.log
+
+# if you want fresh migrations on every clone
+# */migrations/
+# !*/migrations/__init__.py

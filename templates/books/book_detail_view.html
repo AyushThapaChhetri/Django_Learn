@@ -1,0 +1,55 @@
+{% extends 'base/base.html' %}
+
+{% block title %}
+    Book List
+{% endblock %}
+
+{% block content %}
+    <div class="p-5 h-screen bg-gray-100">
+    <a href="{% url 'book_list' %}" class="inline-flex items-center justify-center p-2 hover:bg-gray-200 rounded" aria-label="Back to book list">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-6">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3" />
+        </svg>
+    </a>
+
+    {% if book %}
+
+             <div class="overflow-auto rounded-lg shadow mt-5">
+                <table class="w-full">
+                  <thead class="bg-gray-50 border-b-2 border-gray-200">
+                    <tr>
+                      <th class="min-w-48 p-3 text-sm font-semibold tracking-wide text-left">Title</th>
+                      <th class="min-w-48 p-3 text-sm font-semibold tracking-wide text-left">Author</th>
+                      <th class="min-w-48 p-3 text-sm font-semibold tracking-wide text-left">Publisher</th>
+                      <th class="min-w-48 p-3 text-sm font-semibold tracking-wide text-left">Description</th>
+                      <th class="p-3 text-sm font-semibold tracking-wide text-left">Pages</th>
+                      <th class="p-3 text-sm font-semibold tracking-wide text-left">Language</th>
+                      <th class="min-w-48 p-3 text-sm font-semibold tracking-wide text-left">Added Date</th>
+                      <th class="min-w-48 p-3 text-sm font-semibold tracking-wide text-left">Updated Date</th>
+                      <th class="min-w-64 p-3 text-sm font-semibold tracking-wide text-left">Actions</th>
+                    </tr>
+                  </thead>
+                    <tbody class="divide-y divide-gray-100">
+                        <tr class="bg-gray-50">
+                          <td class="p-3 text-sm text-gray-700">{{ book.title }}</td>
+                          <td class="p-3 text-sm text-gray-700">{{ book.author }}</td>
+                          <td class="p-3 text-sm text-gray-700">{{ book.publisher }}</td>
+                          <td class="p-3 text-sm text-gray-700 ">{{ book.description }}</td>
+                          <td class="p-3 text-sm text-gray-700">{{ book.pages }}</td>
+                          <td class="p-3 text-sm text-gray-700">{{ book.language }}</td>
+                          <td class="p-3 text-sm text-gray-700">{{ book.created_at }}</td>
+                          <td class="p-3 text-sm text-gray-700">{{ book.updated_at }}</td>
+                          <td class="p-3 text-sm text-gray-700">
+                                <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"><a href="{% url 'book_delete' book.uuid  %}">Delete</a></button>
+                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"><a href="{% url 'book_update'  book.uuid%}">Edit</a></button>
+                          </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+    {% else %}
+        no Book
+    {% endif %}
+ </div>
+{% endblock %}

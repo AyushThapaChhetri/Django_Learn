@@ -5,6 +5,9 @@ from src.books.models import Book
 
 from django.core.paginator import Paginator
 
+from django.http import JsonResponse
+from django.db.models import Q
+
 
 # Create your views here.
 def hello(request):
@@ -12,19 +15,43 @@ def hello(request):
     # return render(request, 'hello.html')
     # return HttpResponse("Hello, %s!" % request.path)
 
+def search_books(request):
+    query = request.GET.get('q', '').strip()
+    books = Book.objects.filter(
+        Q(title__icontains=query) |
+        Q(author__icontains=query) |
+        Q(publisher__icontains=query)
+    )
+
+    data = list(books.values(
+        'uuid', 'title', 'author', 'publisher', 'description',
+        'pages', 'language', 'created_at', 'updated_at'
+    ))
+    return JsonResponse({'books': data})
+
 # List all books (Read)
 class BookListView(View):
    def get(self, request):
+       limit = request.GET.get('limit',10)
+       try:
+           limit= int(limit)
+       except (ValueError, TypeError):
+           limit = 10 #fallback to default
+
+
+
+
+
        # books = Book.objects.all()
        books = Book.objects.all()
 
        # Set Up Pagination
-       p= Paginator(Book.objects.all(), 3)
+       p= Paginator(Book.objects.all(), limit)
        page = request.GET.get('page')
        paginated_books = p.get_page(page)
 
        return render(request, '../../Project_B/templates/books/book_list.html', {'books': books,
-                                                                                 'paginated_books': paginated_books,})
+                                                                                 'paginated_books': paginated_books,'limit': limit})
 
 #View specific books(Read)
 class BookDetailView(View):
@@ -70,4 +97,6 @@ class BookDeleteView(View):
         book = get_object_or_404(Book, uuid=uuid)
         book.delete()
         return redirect('book_list')
+
+
 

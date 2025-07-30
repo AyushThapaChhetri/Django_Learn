@@ -14,3 +14,11 @@ class BookForm(forms.ModelForm):
             'pages',
             'language'
             ]
+
+    def clean_description(self):
+        desc = self.cleaned_data.get('description','')
+        return desc.strip() or None
+
+    def clean_pages(self):
+        pages=self.cleaned_data.get('pages')
+        return pages if pages not in ['',None] else None
